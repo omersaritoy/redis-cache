@@ -53,6 +53,7 @@ public class UserService {
         return null;
     }
 
+    @CacheEvict(value = {"users", "user_id"}, allEntries = true)
     public String deleteUser(Long id) {
         userRepository.deleteById(id);
         return "User deleted";
