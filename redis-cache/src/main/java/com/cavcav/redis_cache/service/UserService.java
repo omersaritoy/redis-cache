@@ -38,19 +38,16 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-
-    @CachePut(cacheNames = "user_id", key = "'getUserById'+#dto.id", unless = "result==null")
-
+    @CachePut(cacheNames = "user_id", key = "'getUserById' + #dto.id", unless = "#result == null")
     public User updateUser(UpdateUserDto dto) {
-
-        Optional<User> updateUser = userRepository.findById(dto.getId());
-        if (updateUser.isPresent()) {
-            User entity = updateUser.get();
-            entity.setPassword(dto.getPassword());
-            return userRepository.save(entity);
+        Optional<User> user = userRepository.findById(dto.getId());
+        if (user.isPresent()) {
+            User user1 = user.get();
+            user1.setPassword(dto.getPassword());
+            return userRepository.save(user1);
+        } else {
+            return null;
         }
-
-        return null;
     }
 
     @CacheEvict(value = {"users", "user_id"}, allEntries = true)
