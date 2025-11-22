@@ -28,8 +28,31 @@ This is a demo project built with Spring Boot, demonstrating how to use Redis ca
 - **Redis** server installed and running locally or on a remote server
 - **PostgreSQL** database setup with a configured schema
 
+## application.properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/redis_cache_demo
+spring.datasource.username=postgres
+spring.datasource.password=yourpassword
+spring.redis.host=localhost
+spring.redis.port=6379
+
+ 
+ ### API Endpoints
+Method	Endpoint	
+POST	/api/v1/users	
+GET	/api/v1/users	
+GET	/api/v1/users/{id}	
+PUT	/api/v1/users	
+DELETE	/api/v1/users/{id}	
+
+
+
+
 ### Clone the Repository
 
 ```bash
 git clone https://github.com/yourusername/redis-cache.git
 cd redis-cache
+
+
+
+
