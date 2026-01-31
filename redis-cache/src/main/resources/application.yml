@@ -3,7 +3,7 @@ spring:
     name: redis-cache
   info:
     build:
-      creator: Ömer Sar?toy
+      creator: Omer Sar?toy
   datasource:
     url: ${PG_HOST}
     username: ${PG_USERNAME}

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,6 +45,34 @@ public class UserService {
 
     @CachePut(cacheNames = "user_id", key = "'getUserById' + #dto.id", unless = "#result == null")
     public User updateUser(UpdateUserDto dto) {
+        Optional<User> user = userRepository.findById(dto.getId());
+        if (user.isPresent()) {
+            User user1 = user.get();
+            user1.setPassword(dto.getPassword());
+            return userRepository.save(user1);
+        } else {
+            return null;
+        }
+    }
+
+    @Caching(
+            put = {
+                    // Update sonrası yeni user objesini user_id cache’ine yaz
+                    @CachePut(
+                            value = "user_id",
+                            key = "'getUserById' + #dto.id",
+                            unless = "#result == null"
+                    )
+            },
+            evict = {
+                    // Kullanıcı listesi artık güncel değil → temizle
+                    @CacheEvict(
+                            value = "users",
+                            allEntries = true
+                    )
+            }
+    )
+    public User updateUser1(UpdateUserDto dto) {
         Optional<User> user = userRepository.findById(dto.getId());
         if (user.isPresent()) {
             User user1 = user.get();
